@@ -1,80 +1,48 @@
-def start_game():
-    print("Welcome to Space Odyssey!")
-    print("You are an astronaut on a mission to explore a newly discovered planet.")
-    print("Your spaceship has crash-landed, and you need to find a way to escape.")
-    print("You have three key items to collect: the spaceship's repair manual, a fuel injector, and a communication device.")
-    
-    inventory = []
-    current_room = "Crash Site"
-    
-    while True:
-        if current_room == "Crash Site":
-            crash_site()
-        elif current_room == "Forest":
-            forest()
-        elif current_room == "Cave":
-            cave()
-        elif current_room == "Escape Pod":
-            escape_pod()
-        else:
-            print("Invalid room.")
+import random
 
-def crash_site():
-    print("You are at the crash site of your spaceship.")
-    print("You see the wreckage of your ship scattered around you.")
-    
-    options = ["Search the wreckage", "Go to the forest"]
-    choice = input("What do you want to do? ")
-    
-    if choice == "Search the wreckage":
-        if "repair manual" not in inventory:
-            print("You find the spaceship's repair manual.")
-            inventory.append("repair manual")
-        else:
-            print("You have already found the repair manual.")
-    elif choice == "Go to the forest":
-        current_room = "Forest"
+# Define the list of essential items
+essential_items = ["Oxygen Tank", "Spacesuit Helmet", "Repair Kit"]
+
+# Function to check if all essential items are collected
+def check_inventory(inventory):
+    if len(inventory) == len(essential_items):
+        print("Congratulations! You've gathered all the essential items and can now escape the spacecraft.")
+        return True
     else:
-        print("Invalid choice.")
+        return False
 
-def forest():
-    print("You are in a dense forest.")
-    print("You see trees towering above you and hear the sounds of animals in the distance.")
-    
-    options = ["Continue through the forest", "Go back to the crash site"]
-    choice = input("What do you want to do? ")
-    
-    if choice == "Continue through the forest":
-        current_room = "Cave"
-    elif choice == "Go back to the crash site":
-        current_room = "Crash Site"
-    else:
-        print("Invalid choice.")
+# Function to simulate a random encounter
+def random_encounter():
+    encounter_events = ["You encountered a floating asteroid and narrowly avoided collision.",
+                        "You spotted a distress signal from another spacecraft, but it's too far to reach.",
+                        "You discovered a hidden compartment containing valuable supplies."]
+    random_event = encounter_events[random.randrange(0, len(encounter_events))]
+    print(random_event)
 
-def cave():
-    print("You are in a dark cave.")
-    print("You can barely see your surroundings.")
-    
-    options = ["Explore the cave", "Go back to the forest"]
-    choice = input("What do you want to do? ")
-    
-    if choice == "Explore the cave":
-        if "fuel injector" not in inventory:
-            print("You find a fuel injector in a hidden crevice.")
-            inventory.append("fuel injector")
+# Main game loop
+inventory = []
+while not check_inventory(inventory):
+    # Display the current inventory
+    print("Inventory:", inventory)
+
+    # Present a choice of actions
+    print("\nWhat do you want to do?")
+    print("1. Search for essential items")
+    print("2. Explore the spacecraft")
+
+    # Get player input
+    action = input("Enter your choice: ")
+
+    if action == "1":
+        # Simulate searching for items
+        found_item = essential_items[random.randrange(0, len(essential_items))]
+        if found_item not in inventory:
+            inventory.append(found_item)
+            print("You found a", found_item)
         else:
-            print("You have already found the fuel injector.")
-    elif choice == "Go back to the forest":
-        current_room = "Forest"
+            print("You already have that item.")
+    elif action == "2":
+        # Trigger a random encounter
+        random_encounter()
     else:
-        print("Invalid choice.")
-
-def escape_pod():
-    print("You reach the escape pod.")
-    print("You use the repair manual to fix the pod.")
-    print("You use the fuel injector to fill the pod's fuel tank.")
-    print("You use the communication device to contact Earth.")
-    print("Your escape pod launches, and you successfully return to Earth.")
-    print("Congratulations! You have escaped the planet!")
-
-start_game()
+        print("Invalid action. Please choose from the available options.")
